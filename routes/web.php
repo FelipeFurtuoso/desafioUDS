@@ -15,3 +15,4 @@
 //     return view('welcome');
 // });
 Route::apiResource('product', 'ProductController');
+Route::apiResource('customer', 'CustomerController');
