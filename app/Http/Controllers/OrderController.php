@@ -98,7 +98,9 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $date = Carbon::now()->toDateString();
-        
+        $customer = new Customer();
+        $show = $customer->findCustomerById($request->input('customer_id'));
+        if (is_null($show)) return 'Cliente nao existe';
 
         $orderInfo = 
         [
@@ -134,24 +136,31 @@ class OrderController extends Controller
         
         $orderProducts = $order1->find($id)->products;
         $orderCustomer = $order1->find($id)->customer;
+
         $orderTotal = $order1->find($id)->total_order;
         $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
                
         
-         
-        foreach ($orderSubTotal as $key => $value1) 
-        {   
-            $order['product'][]['subtotal'] = $value1->total;
-        }
+        $i = 0;
+       
         
         foreach ($orderProducts as $key => $value) 
         {
-            $order['product'][$key]['id'] = $value->id;
-            $order['product'][$key]['code'] = $value->code;
-            $order['product'][$key]['name'] = $value->name;
+
+            $order['product'][$i]['id'] = $value->id;
+            $order['product'][$i]['code'] = $value->code;
+            $order['product'][$i]['name'] = $value->name;
+            $i++;
         }
-        
-        
+        $i = 0;
+        foreach ($orderSubTotal as $key => $value1) 
+        {   
+           
+            $order['product'][$i]['subtotal'] = $value1->total;
+            $order['product'][$i]['quantity'] = $value1->quantity;
+             $i++;
+
+        }
         
         $order['customer'] = $orderCustomer; 
         $order['total'] = $orderTotal;

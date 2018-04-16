@@ -42,13 +42,13 @@ class ProductController extends Controller
         return 'Cadastrado com sucesso';
     }
 
-    public function show($code)
+    public function show($id)
     {
         $products = new Product();
-        $show = $products->findProductByCode($code);
-        if (count($show) == 0) return 'Produto nao existe';
+        $show = $products->findProductById($id);
+        if (is_null($show)) return 'Produto nao existe';
         
-        return $products->findProductByCode($code);
+        return $products->findProductById($id);
     }
 
     public function update(Request $request,$id)
