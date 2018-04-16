@@ -12,12 +12,14 @@ class ProductController extends Controller
         $product = new Product;
         if (!empty($request['code'])) {
             $getCode = $product->findProductByCode($request['code']);
+            if(count($getCode) == 0) return 'Code nao cadastrado';
             foreach ($getCode as $key => $getCodeOk) {}
                 
             return $getCodeOk;
         }
         if (!empty($request['name'])) {
             $getName = $product->findProductByName($request['name']);
+            if(count($getName) == 0) return 'Nome nao cadastrado';
             foreach ($getName as $key => $getNameOk) {}
             return $getNameOk;
         }

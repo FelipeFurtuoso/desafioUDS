@@ -27,7 +27,7 @@ Para Cadastrar um Pedido
 Para Cadastrar um ItemPedido
 
 	Enviar um Post com os campos (endpoint:/orderProduct):
-	
+
 		order_id = poderá ser resgatado no get de pedidos;
 		product_id = poderá ser resgatado no get dos produtos;
 		quantity = valor inteiro;
@@ -35,8 +35,29 @@ Para Cadastrar um ItemPedido
 
 
 
-## Em Breve
-	....
+## Filtros e Buscas
+	 Buscar no endpoint /customer:
+
+	 	cpf = passar por get o campo(cpf) e o numero exato;
+	 	name = passar por get o campo(name) e nome exato;
+	 	data de nascimento = passar por get o campo(birthdate) e a data exata no formato  Y/M/D (exemplo: 2018-04-15);
+
+	 Buscar no endpoint /product;
+
+	 	code = passar por get o campo(code) e o numero exato;
+	 	name = passar por get o campo(name) e o nome exato;
+
+	 Buscar no endpoint /Order;
+
+	 	cliente = passar por get no campo(customer_id) o id do cliente que poderá ser regatado em qualquer busca no endpoint customer ou ao solicitar o get sem parametro;
+	 	Codigo do pedido = passar por get no campo(code) o codigo do pedido que poderá ser resgatado ao concluir o pedido ou qualquer das buscas mencionadas;
+	 	Emissão = passar por get no campo (emission) a data exata da emissao do pedido no formato  Y/M/D;
+	 	Total do pedido = Passar por get no campo (total_order) o valor total exato do pedido;
+	 	Produtos = passar por get no campo (product_id) o id do produto que poderá ser resgatado em qualquer busca no endpoint product ou solicitar o get sem parametro;
+	 	
+
+
+
 
 
 

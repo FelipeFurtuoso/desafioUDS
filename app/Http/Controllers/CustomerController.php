@@ -9,22 +9,25 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
+        
         $customer = new Customer;
         if (!empty($request['cpf'])) {
-            $getCpf = $customer->findPeopleByCode($request['cpf']);
+            $getCpf = $customer->findCustomerByCPF($request['cpf']);
+            if(count($getCpf) == 0) return 'CPF nao cadastrado';
             foreach ($getCpf as $key => $getCpfOk) {}
             return $getCodeOk;
         }
         if (!empty($request['name'])) {
-            $getName = $customer->findPeopleByName($request['name']);
+            $getName = $customer->findCustomerByName($request['name']);
+            if(count($getName) == 0) return 'Nome nao cadastrado';
             foreach ($getName as $key => $getNameOk) {}
             return $getNameOk;
         }
         if (!empty($request['birthdate'])) {
-            $getBirthdate = $customer->findPeopleByName($request['birthdate']);
+            $getBirthdate = $customer->findCustomerByBirthdate($request['birthdate']);
+            if(count($getBirthdate) == 0) return 'Nascimento  nao cadastrado';
             foreach ($getBirthdate as $key => $getBirthdateOk) {}
             return $getBirthdateOk;
         }

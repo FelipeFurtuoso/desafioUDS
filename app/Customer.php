@@ -48,11 +48,11 @@ class Customer extends Model
         return self::all()->where('name','=',$name);
     }
 
-    public function findPeopleByBirthdate($birthdate)
+    public function findCustomerByBirthdate($birthdate)
     {
        
         $customer = self::all()->where('birthdate','=',$birthdate);
-
+        
         return self::all()->where('birthdate','=',$birthdate);
     }
 
