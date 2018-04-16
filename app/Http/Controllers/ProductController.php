@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $product = null;
-    public function __construct()
-    {
-        
-    
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $product = new Product;
@@ -33,15 +22,11 @@ class ProductController extends Controller
             return $getNameOk;
         }
         
-       return $product->allproducts();
+        $getAllProduct = $product->allproducts();
+        if(count($getAllProduct)== 0 )return 'Nenhum Produto Cadastrado';
+       return $getAllProduct;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         
@@ -57,12 +42,6 @@ class ProductController extends Controller
         return 'Cadastrado com sucesso';
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function show($code)
     {
         $products = new Product();
@@ -72,13 +51,6 @@ class ProductController extends Controller
         return $products->findProductByCode($code);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
 
@@ -92,18 +64,12 @@ class ProductController extends Controller
         return 'Atualizado com sucesso'; 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($code)
+    public function destroy($id)
     {
         $product = new Product;
-        $find = $product->findProductByCode($code);
+        $find = $product->findProductById($id);
         if (is_null($find)) return 'Produto nao existe';
-        $product->deleteProduct($code);
+        $product->deleteProduct($id);
         return 'Deletado com sucesso'; 
     }
 }

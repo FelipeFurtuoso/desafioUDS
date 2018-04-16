@@ -29,7 +29,10 @@ class CustomerController extends Controller
             return $getBirthdateOk;
         }
         
-       return $customer->allcustomer();
+       
+       $getAllCustomer = $customer->allcustomer();
+       if(count($getAllCustomer)== 0 )return 'Nenhum Cliente Cadastrado';
+       return $getAllCustomer;
     }
 
     public function store(Request $request)

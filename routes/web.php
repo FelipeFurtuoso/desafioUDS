@@ -16,3 +16,5 @@
 // });
 Route::apiResource('product', 'ProductController');
 Route::apiResource('customer', 'CustomerController');
+Route::apiResource('order', 'OrderController');
+Route::apiResource('orderProduct', 'OrderProductController');

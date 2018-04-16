@@ -58,9 +58,9 @@ class Product extends Model
 
     }
 
-    public function deleteProduct($code)
+    public function deleteProduct($id)
     {
-       $product = self::findProductByCode($code);
+       $product = self::findProductById($id);
        $product->delete();
        return $product;
     }
