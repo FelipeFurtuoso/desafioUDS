@@ -24,7 +24,14 @@ class OrderController extends Controller
         if (!empty($request['customer_id'])) {
             $getCustomer = $orderGet->findOrderByCustomer($request['customer_id']);
             if (count($getCustomer) == 0)return 'Nada Encontrado';
-            foreach ($getCustomer as $key => $getCustomerOk) {}
+            //Possivel melhoria no retorno
+            // $i = 0;
+
+            // foreach ($getCustomer as $key => $getCustomerOk) {
+
+            //    $value = self::formatArray($getCustomerOk->id,$i);
+            //    $i++;
+            // }
             return $getCustomer;
         }
         if (!empty($request['code'])) {
@@ -68,24 +75,28 @@ class OrderController extends Controller
         
         
        
-        $orderProducts = $orderGet->find($id)->products;
+        $orderProducts = $order1->find($id)->orderProduct;
+        foreach ($orderProducts as $key => $orderProductsOk) 
+        {
+            $getProducts [] = $orderProductsOk;
+        }
         
         $orderCustomer = $orderGet->find($id)->customer;
         $orderTotal = $orderGet->find($id)->total_order;
         $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
                
         
-         
-        foreach ($orderSubTotal as $key => $value1) 
-        {   
-           $order['product'][]['subtotal'] = $value1->total;
-        }
-
-        foreach ($orderProducts as $key => $value) 
+        
+        foreach ($getProducts as $key => $value) 
         {
-            $order['product'][$key]['id'] = $value->id;
-            $order['product'][$key]['code'] = $value->code;
-            $order['product'][$key]['name'] = $value->name;
+            
+            $order['product']['id'] = $value->id;
+            $order['product']['code'] = $value->product->code;
+            $order['product']['name'] = $value->product->name;
+            $order['product']['discount'] = $value->discount;
+            $order['product']['quantity'] = $value->quantity;
+            $order['product']['subtotal'] = $value->total;
+           
         }
         
         $order['customer'] = $orderCustomer; 
@@ -134,33 +145,35 @@ class OrderController extends Controller
 
         
         
-        $orderProducts = $order1->find($id)->products;
+        $orderProducts = $order1->find($id)->orderProduct;
+
+        if(count($orderProducts) == 0)return json_encode($show);
+        foreach ($orderProducts as $key => $orderProductsOk) {
+            $aux [] = $orderProductsOk;
+
+        }
+        
         $orderCustomer = $order1->find($id)->customer;
 
         $orderTotal = $order1->find($id)->total_order;
-        $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
+       // $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
                
         
-        $i = 0;
+        
        
         
-        foreach ($orderProducts as $key => $value) 
+        foreach ($aux as $key => $value) 
         {
-
-            $order['product'][$i]['id'] = $value->id;
-            $order['product'][$i]['code'] = $value->code;
-            $order['product'][$i]['name'] = $value->name;
-            $i++;
-        }
-        $i = 0;
-        foreach ($orderSubTotal as $key => $value1) 
-        {   
+            
+            $order['product']['id'] = $value->id;
+            $order['product']['code'] = $value->product->code;
+            $order['product']['name'] = $value->product->name;
+            $order['product']['discount'] = $value->discount;
+            $order['product']['quantity'] = $value->quantity;
+            $order['product']['subtotal'] = $value->total;
            
-            $order['product'][$i]['subtotal'] = $value1->total;
-            $order['product'][$i]['quantity'] = $value1->quantity;
-             $i++;
-
         }
+        
         
         $order['customer'] = $orderCustomer; 
         $order['total'] = $orderTotal;
@@ -185,4 +198,44 @@ class OrderController extends Controller
         OrderProduct::where('order_id','=',$id)->delete();
         return 'Deletado com Sucesso';
     }
+
+    public function formatArray($id,$i)
+    {
+
+        $order1 = new Order;
+        $orderProducts = $order1->find($id)->orderProduct;
+
+        foreach ($orderProducts as $key => $orderProductsOk) {
+            $aux [] = $orderProductsOk;
+        }
+        
+        $orderCustomer = $order1->find($id)->customer;
+
+        $orderTotal = $order1->find($id)->total_order;
+       // $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
+               
+        
+        
+       
+        
+        foreach ($aux as $i => $value) 
+        {
+            
+            $order['product']['id'] = $value->id;
+            $order['product']['code'] = $value->product->code;
+            $order['product']['name'] = $value->product->name;
+            $order['product']['discount'] = $value->discount;
+            $order['product']['quantity'] = $value->quantity;
+            $order['product']['subtotal'] = $value->total;
+           
+        }
+        
+        
+        $order['customer'] = $orderCustomer; 
+        $order['total'] = $orderTotal;
+
+        return $order;
+    }
+    
+
 }

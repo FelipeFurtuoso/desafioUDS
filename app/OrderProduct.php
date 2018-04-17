@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Product;
 
 class OrderProduct extends Model
 {
@@ -17,14 +18,10 @@ class OrderProduct extends Model
         'total',
     ];
 
-    public function order()
-    {         
-    	return $this->belongsTo('App\Order');   
 
-	}
 	public function product()
 	{
-    	return $this->hasMany('App\Product');   
+    	return $this->belongsTo(Product::class);   
 
 	}
 

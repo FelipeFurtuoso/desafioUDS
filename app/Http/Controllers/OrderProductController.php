@@ -25,24 +25,20 @@ class OrderProductController extends Controller
         $showProduct = $product->findProductById($request->input('product_id'));
         if (is_null($showProduct)) return 'Produto nao existe';
 
-        $percentual = $request->input('discount') / 100.0;
         
-        $productOk = $product->findProductById($request->input('product_id'));
-        $aux = Order::find($request->input('order_id'));
         
-        $discount = $productOk->price - ($percentual*$productOk->price);
-
-        $total = ($discount * $request->input('quantity')) + $aux->total_order;
+        $calculo = $order->calculateTotal($request->input('product_id'),$request->input('order_id'),$request->input('discount'),$request->input('quantity'));
+        
         
 
 
-        $params = ['total_order'=> $total];
+        $params = ['total_order'=> $calculo['total']];
         $order_product = [
                    'order_id' => $request->input('order_id'),
                    'product_id' => $request->input('product_id'),
                    'quantity' => $request->input('quantity'),
                    'discount' => $request->input('discount'),
-                   'total' => $discount
+                   'total' => $calculo['subtotal']
         ];
 
         OrderProduct::create($order_product);
@@ -53,6 +49,7 @@ class OrderProductController extends Controller
 
         return 'Produto incluido com Sucesso';
     }
+
 
     
     public function show(OrderProduct $orderProduct)

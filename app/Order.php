@@ -22,9 +22,9 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function products()
+    public function orderProduct()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->hasMany(OrderProduct::class);
     }
     
     
@@ -97,4 +97,18 @@ class Order extends Model
        return $order;
     }
 
+    public function calculateTotal($product_id,$order_id,$discount,$quantity)
+    {
+        $product = new Product;
+        $productOk = $product->findProductById($product_id);
+        $aux = self::find($order_id);
+
+
+        $percentual = $discount / 100.0;
+        $discount = $productOk->price - ($percentual*$productOk->price);
+        $total['total'] = ($discount * $quantity) + $aux->total_order;
+        $total['subtotal'] = $discount;
+
+        return $total;
+    }
 }
