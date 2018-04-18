@@ -162,7 +162,7 @@ class OrderController extends Controller
         $orderProducts = $order1->find($id)->orderProduct;
 
         foreach ($orderProducts as $key => $orderProductsOk) {
-            $aux [] = $orderProductsOk;
+            $aux[$key]  = $orderProductsOk;
         }
         
         $orderCustomer = $order1->find($id)->customer;
@@ -177,15 +177,15 @@ class OrderController extends Controller
         if (empty($aux)) {
           $order['product'] = 'Sem produtos';
         }else{
-        foreach ($aux as  $value) 
+        foreach ($aux as $j => $value) 
         {
             
-            $order['product']['id'] = $value->id;
-            $order['product']['code'] = $value->product->code;
-            $order['product']['name'] = $value->product->name;
-            $order['product']['discount'] = $value->discount;
-            $order['product']['quantity'] = $value->quantity;
-            $order['product']['subtotal'] = $value->total;
+            $order['product'][$j]['id'] = $value->id;
+            $order['product'][$j]['code'] = $value->product->code;
+            $order['product'][$j]['name'] = $value->product->name;
+            $order['product'][$j]['discount'] = $value->discount;
+            $order['product'][$j]['quantity'] = $value->quantity;
+            $order['product'][$j]['subtotal'] = $value->total;
            
         }
         }
