@@ -48,11 +48,11 @@
 	 	
 
  - cpf = passar por get o campo(cpf) e o numero exato;
- - name = passar por get o campo(name) e nome exato;
+ - name = passar por get o campo(name) e nome ;
 
 	
 
- - data de nascimento = passar por get o campo(birthdate) e a data exata
+ - data de nascimento = passar por get o campo(birthdate) e a data 
    no formato  Y/M/D (exemplo: 2018-04-15);
 
 
@@ -60,7 +60,7 @@
 
 
  - code = passar por get o campo(code) e o numero exato;
- - name = passar por get o campo(name) e o nome exato;
+ - name = passar por get o campo(name) e o nome ;
 
 ## Buscar no endpoint /order:
 
