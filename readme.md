@@ -2,9 +2,9 @@
 
 
 
-## Como Usar
+# Como Usar
 
-Para Cadastrar Cliente:
+## Para Cadastrar Cliente:
 
 	Enviar um Post com os campos (endpoint:/customer):
  - name = string;
@@ -13,7 +13,7 @@ Para Cadastrar Cliente:
 
  - birthdate = no formato Y/M/D (exemplo: 2018-04-15);
 
-Para Cadastrar um Produto:
+## Para Cadastrar um Produto:
 
 	Enviar um Post com os campos (endpoint:/product):
 
@@ -23,7 +23,7 @@ Para Cadastrar um Produto:
 
  - price = valor;
 
-Para Cadastrar um Pedido
+## Para Cadastrar um Pedido
 
 	Enviar um Post com os campos (endpoint:/order):
 
@@ -32,7 +32,7 @@ Para Cadastrar um Pedido
  - customer_id = deverá ser enviado (poderá ser resgato na consulta do
    cliente);
 
-Para Cadastrar um ItemPedido
+## Para Cadastrar um ItemPedido
 
 	Enviar um Post com os campos (endpoint:/orderProduct):
 
@@ -41,8 +41,9 @@ Para Cadastrar um ItemPedido
  - quantity = valor inteiro;
  - discount = deverá ser percentual;
 
-## Filtros e Buscas
-	 Buscar no endpoint /customer:
+# Filtros e Buscas
+
+## Buscar no endpoint /customer:
 
 	 	
 
@@ -55,13 +56,13 @@ Para Cadastrar um ItemPedido
    no formato  Y/M/D (exemplo: 2018-04-15);
 
 
-	 Buscar no endpoint /product:
+## Buscar no endpoint /product:
 
 
  - code = passar por get o campo(code) e o numero exato;
  - name = passar por get o campo(name) e o nome exato;
 
-	 Buscar no endpoint /order:
+## Buscar no endpoint /order:
 
  - Cliente = passar por get no campo(customer_id) o id do cliente, o mesmo
    poderá ser regatado em qualquer busca no endpoint 		   customer ou ao
