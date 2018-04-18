@@ -17,19 +17,19 @@ class CustomerController extends Controller
             $getCpf = $customer->findCustomerByCPF($request['cpf']);
             if(count($getCpf) == 0) return 'CPF nao cadastrado';
             foreach ($getCpf as $key => $getCpfOk) {}
-            return $getCodeOk;
+            return $getCpf;
         }
         if (!empty($request['name'])) {
             $getName = $customer->findCustomerByName($request['name']);
             if(count($getName) == 0) return 'Nome nao cadastrado';
             foreach ($getName as $key => $getNameOk) {}
-            return $getNameOk;
+            return $getName;
         }
         if (!empty($request['birthdate'])) {
             $getBirthdate = $customer->findCustomerByBirthdate($request['birthdate']);
             if(count($getBirthdate) == 0) return 'Nascimento  nao cadastrado';
             foreach ($getBirthdate as $key => $getBirthdateOk) {}
-            return $getBirthdateOk;
+            return $getBirthdate;
         }
         
        
@@ -41,7 +41,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         
-
+        if (empty($request->all()))return 'Informar campos para cadastar o cliente';
         $customer = new Customer;
 
         $existCode = $customer->findCustomerByCPF($request['cpf']);

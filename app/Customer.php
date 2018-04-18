@@ -42,18 +42,18 @@ class Customer extends Model
 
     public function findCustomerByName($name)
     {
-       
-        $customer = self::all()->where('name','=',$name);
+      
+        $customer =  self::where('name','like','%'.$name.'%')->get();
 
-        return self::all()->where('name','=',$name);
+        return $customer;
     }
 
     public function findCustomerByBirthdate($birthdate)
     {
        
-        $customer = self::all()->where('birthdate','=',$birthdate);
+        $customer = self::where('birthdate','like','%'.$birthdate.'%')->get();
         
-        return self::all()->where('birthdate','=',$birthdate);
+        return $customer;
     }
 
     public function updateCustomer($params , $id)

@@ -78,7 +78,8 @@ class Order extends Model
 
     public function findOrderByEmission($emission)
     {
-        $order = self::all()->where('emission','=',$emission);
+
+        $order = self::where('emission','like','%'.$emission.'%')->get();
         
         return $order;
 
@@ -111,4 +112,6 @@ class Order extends Model
 
         return $total;
     }
+
+
 }

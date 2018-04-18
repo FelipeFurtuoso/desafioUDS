@@ -43,9 +43,9 @@ class Product extends Model
     public function findProductByName($name)
     {
        
-       $product = self::all()->where('name','=',$name);
-
-       return self::all()->where('name','=',$name);
+       $product = self::where('name','like','%'.$name.'%')->get();
+       
+       return $product;
     }
 
     public function updateProduct($params , $id)

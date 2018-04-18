@@ -19,91 +19,79 @@ class OrderController extends Controller
     {
 
         $orderGet = new Order;
+        $i = 0;
 
-
-        if (!empty($request['customer_id'])) {
+        if (!empty($request['customer_id'])) 
+            {
             $getCustomer = $orderGet->findOrderByCustomer($request['customer_id']);
             if (count($getCustomer) == 0)return 'Nada Encontrado';
-            //Possivel melhoria no retorno
-            // $i = 0;
 
-            // foreach ($getCustomer as $key => $getCustomerOk) {
-
-            //    $value = self::formatArray($getCustomerOk->id,$i);
-            //    $i++;
-            // }
-            return $getCustomer;
+            foreach ($getCustomer as $key => $getCustomerOk) 
+            {
+            $value['order'][$key] = self::formatArray($getCustomerOk->id,$i);
+            }
+            return $value;
         }
-        if (!empty($request['code'])) {
-            $getCode = $orderGet->findOrderByCode($request['code']);
-            if (count($getCode) == 0)return 'Nada Encontrado';
-            foreach ($getCode as $key => $getCodeOk) {}
-            $id = $getCodeOk->id;
-        }
-        if (!empty($request['emission'])) {
-            $getDate = $orderGet->findOrderByEmission($request['emission']);
-            if (count($getDate) == 0)return 'Nada Encontrado';
-            foreach ($getDate as $key => $getDateOk) {}
-            $id =  $getDateOk->id;
-        }
-        if (!empty($request['total_order'])) {
-            $getTotalOrder = $orderGet->findOrderByTotalOrder($request['total_order']);
-            if (count($getTotalOrder) == 0)return 'Nada Encontrado';
-            foreach ($getTotalOrder as $key => $getTotalOrderOk) {}
-            $id = $getTotalOrderOk->id;
-        }
-        if (!empty($request['product_id'])) {
+        if (!empty($request['product_id'])) 
+            {
             $getProduct = $orderGet->findOrderByProduct($request['product_id']);
             if (count($getProduct) == 0)return 'Nada Encontrado';
-            foreach ($getProduct as $key => $getProductOk) {}
-            return $getProduct;
-        }
 
-        if(empty($id)){
+            foreach ($getProduct as $key => $getProductOk) 
+            {
+            $value['order'][] = self::formatArray($getProductOk->id,$i);
+            }
+            return $value;
+            
+        }
+        if (!empty($request['code'])) 
+            {
+            $getCode = $orderGet->findOrderByCode($request['code']);
+            if (count($getCode) == 0)return 'Nada Encontrado';
+            
+            foreach ($getCode as $key => $getCodeOk) 
+            {
+                $value['order'][] = self::formatArray($getCodeOk->id,$i);
+            }
+            return $value;
+        }
+        if (!empty($request['emission'])) 
+            {
+            $getDate = $orderGet->findOrderByEmission($request['emission']);
+            if (count($getDate) == 0)return 'Nada Encontrado';
+            
+            foreach ($getDate as $key => $getDateOk) 
+            {
+                $value['order'][] = self::formatArray($getDateOk->id,$i);
+            }
+            return $value;
+            }
+        if (!empty($request['total_order'])) 
+            {
+            $getTotalOrder = $orderGet->findOrderByTotalOrder($request['total_order']);
+            if (count($getTotalOrder) == 0)return 'Nada Encontrado';
+            
+            foreach ($getTotalOrder as $key => $getTotalOrderOk) 
+            {
+                $value['order'][] = self::formatArray($getTotalOrderOk->id,$i);   
+            }
+            return $value;
+            }
+        
+
+        if(empty($id))
+            {
             $all=Order::where('id','>=',0)->paginate(5);
             
-            foreach ($all as $key => $allGet) {
-               $aux[]=$allGet;
+            foreach ($all as $key => $allGet) 
+            {
+               $value['order'][] = self::formatArray($allGet->id,$i);
             }
 
-            if(empty($aux))return 'Nenhuma Pedido Cadastrado';
-            return $aux;
-        } 
-        $show = $order1->findOrderById($id);
-        if (is_null($show)) return 'Produto nao existe';
-
-        
-        
-       
-        $orderProducts = $order1->find($id)->orderProduct;
-        foreach ($orderProducts as $key => $orderProductsOk) 
-        {
-            $getProducts [] = $orderProductsOk;
-        }
-        
-        $orderCustomer = $orderGet->find($id)->customer;
-        $orderTotal = $orderGet->find($id)->total_order;
-        $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
-               
-        
-        
-        foreach ($getProducts as $key => $value) 
-        {
-            
-            $order['product']['id'] = $value->id;
-            $order['product']['code'] = $value->product->code;
-            $order['product']['name'] = $value->product->name;
-            $order['product']['discount'] = $value->discount;
-            $order['product']['quantity'] = $value->quantity;
-            $order['product']['subtotal'] = $value->total;
-           
-        }
-        
-        $order['customer'] = $orderCustomer; 
-        $order['total'] = $orderTotal;
-        
-     
-    return $order;   
+            if(empty($value))return 'Nenhum Pedido Cadastrado';
+            return $value;
+            } 
+   
     }
     
     public function store(Request $request)
@@ -123,14 +111,14 @@ class OrderController extends Controller
         $order = new Order($orderInfo);
         $order1 = $order->save();
 
-       $orderReturn = 
-       [
+        $orderReturn = 
+        [
         'id' => $order->id,
         'code' => $order->code,
         'customer' => $order->customer,
         'emission' => $order->emission,
         'total' => $order->total,
-       ];
+        ];
          
         return $orderReturn;
 
@@ -139,46 +127,14 @@ class OrderController extends Controller
     
     public function show($id)
     {
+        
         $order1 = new Order;
+        $i = 0;
         $show = $order1->findOrderById($id);
         if (is_null($show)) return 'Pedido nao existe';
-
         
-        
-        $orderProducts = $order1->find($id)->orderProduct;
-
-        if(count($orderProducts) == 0)return json_encode($show);
-        foreach ($orderProducts as $key => $orderProductsOk) {
-            $aux [] = $orderProductsOk;
-
-        }
-        
-        $orderCustomer = $order1->find($id)->customer;
-
-        $orderTotal = $order1->find($id)->total_order;
-       // $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
-               
-        
-        
-       
-        
-        foreach ($aux as $key => $value) 
-        {
-            
-            $order['product']['id'] = $value->id;
-            $order['product']['code'] = $value->product->code;
-            $order['product']['name'] = $value->product->name;
-            $order['product']['discount'] = $value->discount;
-            $order['product']['quantity'] = $value->quantity;
-            $order['product']['subtotal'] = $value->total;
-           
-        }
-        
-        
-        $order['customer'] = $orderCustomer; 
-        $order['total'] = $orderTotal;
-
-        return $order;
+        $value['order'][] = self::formatArray($id,$i);
+        return $value;
     }
 
     
@@ -189,7 +145,7 @@ class OrderController extends Controller
 
     
     public function destroy($id)
-    {
+    {   
         $order = new Order;
         $show = $order->findOrderById($id);
         if (is_null($show)) return 'Pedido nao existe';
@@ -199,7 +155,7 @@ class OrderController extends Controller
         return 'Deletado com Sucesso';
     }
 
-    public function formatArray($id,$i)
+    public  function formatArray($id,$i)
     {
 
         $order1 = new Order;
@@ -210,15 +166,18 @@ class OrderController extends Controller
         }
         
         $orderCustomer = $order1->find($id)->customer;
-
-        $orderTotal = $order1->find($id)->total_order;
-       // $orderSubTotal = OrderProduct::findOrderProductbyOrder($id);
-               
+        $getOrder = $order1->find($id);
         
+        $i++;
+        $order['id'] = $getOrder->id;
+        $order['code'] = $getOrder->code;
+        $order['emission'] = $getOrder->emission;
+        $order['customer'] = $orderCustomer; 
         
-       
-        
-        foreach ($aux as $i => $value) 
+        if (empty($aux)) {
+          $order['product'] = 'Sem produtos';
+        }else{
+        foreach ($aux as  $value) 
         {
             
             $order['product']['id'] = $value->id;
@@ -229,11 +188,10 @@ class OrderController extends Controller
             $order['product']['subtotal'] = $value->total;
            
         }
+        }
+        $order['total'] = $getOrder->total_order;
         
         
-        $order['customer'] = $orderCustomer; 
-        $order['total'] = $orderTotal;
-
         return $order;
     }
     

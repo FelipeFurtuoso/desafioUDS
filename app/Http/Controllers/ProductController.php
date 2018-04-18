@@ -12,16 +12,16 @@ class ProductController extends Controller
         $product = new Product;
         if (!empty($request['code'])) {
             $getCode = $product->findProductByCode($request['code']);
-            if(count($getCode) == 0) return 'Code nao cadastrado';
+            if(count($getCode) == 0) return 'Codigo nao cadastrado';
             foreach ($getCode as $key => $getCodeOk) {}
                 
-            return $getCodeOk;
+            return $getCode;
         }
         if (!empty($request['name'])) {
             $getName = $product->findProductByName($request['name']);
             if(count($getName) == 0) return 'Nome nao cadastrado';
             foreach ($getName as $key => $getNameOk) {}
-            return $getNameOk;
+            return $getName;
         }
         
         $getAllProduct = $product->allproducts();
@@ -31,7 +31,10 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        
+        if(empty($request->all()))return 'Informar campos para cadastrar o produto';
+        if(empty($request['name']))return 'Informar Nome';
+        if(empty($request['code']))return 'Informar Codigo';
+        if(!is_numeric($request['price']))return 'Informar Preco Valido';
         $product = new Product;
 
         $existCode = $product->findProductByCode($request['code']);
@@ -55,13 +58,15 @@ class ProductController extends Controller
 
     public function update(Request $request,$id)
     {
+        if(empty($request->all()))return 'Informar campos para Atualizar o produto';
+        if(empty($request['name']))return 'Informar Nome';
+        if(empty($request['code']))return 'Informar Codigo';
 
-
-         $product = new Product;
-         $find = $product->findProductById($id);
-         if (is_null($find)) return 'Produto nao existe';
+        $product = new Product;
+        $find = $product->findProductById($id);
+        if (is_null($find)) return 'Produto nao existe';
          
-         $product->updateProduct($request->all(), $find->id);
+        $product->updateProduct($request->all(), $find->id);
 
         return 'Atualizado com sucesso'; 
     }
