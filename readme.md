@@ -1,14 +1,20 @@
+
 ## API REST Laravel 
 
+# O que foi usado nessa aplicação:
 
+ - Homestead;
+ - Postman para realizar os teste;
 
 # Como Usar
+
+ - Para testar aconselho usar o Postman e enviar os campos abaixo:
 
 ## Para Cadastrar Cliente:
 
 	Enviar um Post com os campos (endpoint:/customer):
  - name = string;
- - cpf = string; (deve ser um cpf válido para teste sugiro usar algum
+ - cpf = numérico; (deve ser um cpf válido para teste sugiro usar algum
    gerador de cpf);
 
  - birthdate = no formato Y/M/D (exemplo: 2018-04-15);
@@ -17,7 +23,7 @@
 
 	Enviar um Post com os campos (endpoint:/product):
 
- - code = string;
+ - code = numérico;
 
  - name = string;
 
@@ -38,8 +44,8 @@
 
  - order_id = poderá ser resgatado no get de pedidos;
  - product_id = poderá ser resgatado no get dos produtos;
- - quantity = valor inteiro;
- - discount = deverá ser percentual;
+ - quantity = numérico acima de 0;
+ - discount = deverá ser percentual, caso não enviar esse campo o mesmo será 0;
 
 # Filtros e Buscas
 
@@ -47,8 +53,8 @@
 
 	 	
 
- - cpf = passar por get o campo(cpf) e o numero exato;
- - name = passar por get o campo(name) e nome ;
+ - cpf = passar por get o campo(cpf) com numero exato;
+ - name = passar por get o campo(name) com nome a ser pesquisado (pode ser apenas o primeiro nome ou uma letra) ;
 
 	
 
@@ -84,7 +90,7 @@
    solicitar o get sem parâmetro;
 
 ## Banco de Dados
-
+Alterar o arquivo .ENV.EXAMPLE para .ENV.
 No arquivo .ENV deverá alterar DB_DATABASE="*seubandodados*"  para o nome do seu banco de dados.  
 Apos executar o migrate com o seed no comando abaixo:
 
